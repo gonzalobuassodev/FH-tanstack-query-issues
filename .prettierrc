@@ -1,0 +1,25 @@
+{
+  "tabWidth": 4,
+  "useTabs": false,
+  "singleQuote": true,
+  "trailingComma": "none",
+  "arrowParens": "avoid",
+  "printWidth": 80,
+  "semi": true,
+  "bracketSpacing": true,
+  "jsxBracketSameLine": true,
+  "proseWrap": "always",
+  "quoteProps": "as-needed",
+  "endOfLine": "auto",
+  "htmlWhitespaceSensitivity": "css",
+  "importOrder": [
+    "^@core/(.*)$",
+    "^@server/(.*)$",
+    "^@ui/(.*)$",
+    "^[./]"
+  ],  
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+  
+  
+}
