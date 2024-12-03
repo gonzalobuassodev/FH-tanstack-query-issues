@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { LoadingSpinner } from '../../shared';
 import { IssueList } from '../components/IssueList';
 import { LabelPicker } from '../components/LabelPicker';
-import { useIssues } from '../hooks';
+import { useIssuesInfinite } from '../hooks';
 import { State } from '../interfaces';
 
-export const ListView = () => {
+export const ListViewInfinite = () => {
     const [state, setState] = useState<State>(State.All);
     const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
 
@@ -17,12 +17,12 @@ export const ListView = () => {
         }
     };
 
-    const { issuesQuery, page, prevPage, nextPage } = useIssues({
+    const { issuesQuery } = useIssuesInfinite({
         state,
         selectedLabels
     });
 
-    const issues = issuesQuery.data ?? [];
+    const issues = issuesQuery.data?.pages.flat() ?? [];
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-3 mt-5">
@@ -39,15 +39,14 @@ export const ListView = () => {
 
                         <div className="flex justify-between items-center">
                             <button
-                                onClick={prevPage}
-                                className="p-2 bg-blue-500 rounded-md hover:bg-blue-800 transition-all">
-                                Anterior
-                            </button>
-                            <span>{page}</span>
-                            <button
-                                onClick={nextPage}
-                                className="p-2 bg-blue-500 rounded-md hover:bg-blue-800 transition-all">
-                                Siguiente
+                                onClick={() => issuesQuery.fetchNextPage()}
+                                disabled={issuesQuery.isFetchingNextPage}
+                                className="w-full p-2 bg-blue-500 rounded-md hover:bg-blue-800 transition-all disabled:bg-gray-600">
+                                    {
+                                        issuesQuery.isFetchingNextPage
+                                        ? 'Cargando...'
+                                        : 'Carga más'
+                                    }
                             </button>
                         </div>
                     </>
