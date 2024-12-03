@@ -14,7 +14,7 @@ export const IssueView = () => {
 
     if (!issueQuery.data) return <Navigate to="/404" />;
 
-    console.log(issueQuery.data.user);
+    console.log(issueCommentsQuery);
 
     return (
         <div className="mb-5">

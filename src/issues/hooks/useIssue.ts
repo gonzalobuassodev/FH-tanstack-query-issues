@@ -10,7 +10,7 @@ export const useIssue = (issueNumber: number) => {
     })
 
     const issueCommentsQuery = useQuery({
-        queryKey: ['issue-comments', issueQuery.data?.number],
+        queryKey: ['issue', issueQuery.data?.number, 'comments'],
         queryFn: () => getIssueComments(issueQuery.data!.number),
         staleTime: 1000 * 60 * 60,
         enabled: issueQuery.data !== undefined,

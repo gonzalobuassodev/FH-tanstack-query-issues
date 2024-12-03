@@ -1,17 +1,44 @@
 import { FiCheckCircle, FiInfo, FiMessageSquare } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { Issue, State } from '../interfaces';
+import { useQueryClient } from '@tanstack/react-query';
+import { getIssue } from '../../actions';
+import { getIssueComments } from '../../actions/get-issue-comments.action';
 
 interface Props {
     issue: Issue;
 }
 
 export const IssueItem = ({ issue }: Props) => {
-    // console.log(issue);
     const navigate = useNavigate();
 
+    const queryClient = useQueryClient();
+
+    const prefetchData = () => {
+        queryClient.prefetchQuery({
+            queryKey: ['issue', issue.number],
+            queryFn: () => getIssue(issue.number),
+            staleTime: 1000 * 60
+        });
+
+        queryClient.prefetchQuery({
+            queryKey: ['issue', issue.number, 'comments'],
+            queryFn: () => getIssueComments(issue.number),
+            staleTime: 1000 * 60
+        });
+    };
+
+    // const presetData = () => {
+    //     queryClient.setQueriesData({ queryKey: ['issues', issue.number]}, issue, {
+    //         updatedAt: Date.now() + 1000 * 60 
+    //     });
+    // }
+
     return (
-        <div className="animate-fadeIn flex items-center px-2 py-3 mb-5 border rounded-md bg-slate-900 hover:bg-slate-800">
+        <div
+            onMouseEnter={prefetchData}
+            // onMouseEnter={presetData}
+            className="animate-fadeIn flex items-center px-2 py-3 mb-5 border rounded-md bg-slate-900 hover:bg-slate-800">
             {issue.state === State.Open ? (
                 <FiInfo size={30} color="red" className="min-w-10" />
             ) : (
@@ -27,7 +54,7 @@ export const IssueItem = ({ issue }: Props) => {
                 <span className="text-gray-500">
                     {/* TODO: day agos  */}
                     #25581 opened 2 days ago by{' '}
-                    <span className="font-bold">{ issue.user.login}</span>
+                    <span className="font-bold">{issue.user.login}</span>
                 </span>
             </div>
 
