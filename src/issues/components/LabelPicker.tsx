@@ -1,7 +1,12 @@
-import { LoadingSpinner } from "../../shared";
-import { useLabels } from "../hooks";
+import { LoadingSpinner } from '../../shared';
+import { useLabels } from '../hooks';
 
-export const LabelPicker = () => {
+interface Props {
+    selectedLabels: string[];
+    onLabelSelected: (label: string) => void;
+}
+
+export const LabelPicker = ({selectedLabels, onLabelSelected }: Props) => {
     const { labelsQuery } = useLabels();
 
     if (labelsQuery.isLoading) {
@@ -18,9 +23,10 @@ export const LabelPicker = () => {
                 labelsQuery.data.map(label => (
                     <span
                         key={label.id}
-                        className="
+                        onClick={() => onLabelSelected(label.name)}
+                        className={` ${ selectedLabels.includes(label.name) ? 'selected-label' : '' }
                             animate-fadeIn
-                            px-2 py-1 rounded-full text-xs font-semibold hover:bg-slate-800 cursor-pointer"
+                            px-2 py-1 rounded-full text-xs font-semibold hover:bg-slate-800 cursor-pointer`}
                         style={{
                             border: `1px solid #${label.color}`,
                             color: '#3ffccd3'

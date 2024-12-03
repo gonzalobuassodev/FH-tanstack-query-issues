@@ -4,6 +4,7 @@ import { Issue, State } from '../interfaces';
 import { useQueryClient } from '@tanstack/react-query';
 import { getIssue } from '../../actions';
 import { getIssueComments } from '../../actions/get-issue-comments.action';
+import { timeSince } from '../../helpers';
 
 interface Props {
     issue: Issue;
@@ -30,7 +31,7 @@ export const IssueItem = ({ issue }: Props) => {
 
     // const presetData = () => {
     //     queryClient.setQueriesData({ queryKey: ['issues', issue.number]}, issue, {
-    //         updatedAt: Date.now() + 1000 * 60 
+    //         updatedAt: Date.now() + 1000 * 60
     //     });
     // }
 
@@ -53,9 +54,19 @@ export const IssueItem = ({ issue }: Props) => {
                 </a>
                 <span className="text-gray-500">
                     {/* TODO: day agos  */}
-                    #25581 opened 2 days ago by{' '}
+                    #25581 opened {timeSince(issue.created_at)} ago by{' '}
                     <span className="font-bold">{issue.user.login}</span>
                 </span>
+
+                <div className="flex flex-wrap">
+                    {issue.labels.map(label => (
+                        <span
+                            key={label.id}
+                            className='px-2 m-1 py-1 text-xs rounded-md'
+                            style={{ border: `1px solid #${label.color}`  }}
+                        >{label.name}</span>
+                    ))}
+                </div>
             </div>
 
             <img
