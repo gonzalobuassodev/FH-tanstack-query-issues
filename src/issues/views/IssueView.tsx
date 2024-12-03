@@ -12,9 +12,9 @@ export const IssueView = () => {
 
     if (issueQuery.isLoading) return <div>Loading...</div>;
 
-    if (!issueQuery.data) return <Navigate to='/404' />;
+    if (!issueQuery.data) return <Navigate to="/404" />;
 
-    console.log(issueQuery.data.user)
+    console.log(issueQuery.data.user);
 
     return (
         <div className="mb-5">
@@ -35,7 +35,6 @@ export const IssueView = () => {
                     <IssueComment comment={comment} />
                 ))
             )}
-
         </div>
     );
 };
